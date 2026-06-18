@@ -1,5 +1,5 @@
-site_name: Haresign Developer Docs
-site_description: API and developer documentation for Haresign NHS tools and reference data.
+site_name: Haresign Docs
+site_description: Public documentation for the Haresign NHS tools platform and developer API.
 site_url: https://haresign-rtd.readthedocs.io/
 repo_url: https://github.com/milleruk/haresign_rtd
 repo_name: milleruk/haresign_rtd
@@ -10,10 +10,10 @@ theme:
 
 nav:
   - Home: index.md
+  - Platform: platform.md
+  - Tools: tools.md
+  - Data Sources: data-import.md
   - Developer API: api.md
-  - Read the Docs Setup: readthedocs.md
-  - Data Imports: data-import.md
-  - Graph Email: graph-email.md
 
 markdown_extensions:
   - admonition

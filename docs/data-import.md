@@ -1,225 +1,95 @@
-# Data Import Guide
+# Data Sources
 
-This document describes how to refresh NHS data in Haresign.net from PracticeConnect (PC).
+Haresign tools use public NHS and government datasets. This page explains the
+main sources at a high level so users and developers can understand what sits
+behind the dashboards and API.
 
----
+## Source Summary
 
-## Overview
+| Area | Main source | Used for |
+|---|---|---|
+| Practices and PCNs | NHS Organisation Data Service and NHS England reference data | Practice lookup, PCN membership, geography, benchmarking context. |
+| Registered patients | NHS Digital Patients Registered at a GP Practice | List size dashboards, age/sex population breakdowns, local population context. |
+| Appointments | NHS Digital Appointments in General Practice | GP appointments dashboard and API appointment metrics. |
+| Online consultations | NHS England online consultation publications | Online consultation volumes, supplier comparisons, and timing patterns. |
+| Cloud telephony | NHS England Cloud Based Telephony in General Practice | Call demand, answer patterns, wait distributions, and telephony indicators. |
+| Workforce | NHS Digital National Workforce Reporting System | Workforce mix, full-time equivalent measures, and peer comparisons. |
+| QOF | NHS England and NHS Digital QOF publications | QOF income, achievement, prevalence, and indicator metadata. |
+| GP Patient Survey | NHS England / Ipsos GP Patient Survey | Patient experience and access indicators. |
+| NHS payments | NHS Digital NHS Payments to General Practice | Practice and PCN payment benchmarking. |
+| GP Contract Services | NHS Digital GP Contract Services | Contract, vaccination, and service achievement indicators. |
+| PCN DES | NHS England PCN DES achievement publications | PCN DES indicator achievement and comparison. |
+| OHID Fingertips | Office for Health Improvement and Disparities Fingertips API | Public health profiles and indicator exploration. |
+| CQC reference content | Care Quality Commission public framework and local configuration | CQC search and assurance support tools. |
 
-Haresign.net stores data locally in its own PostgreSQL database.
-Data is sourced from PracticeConnect via NDJSON exports and imported using Django management commands or the admin UI.
+## Refresh Cadence
 
-All commands below are run **on the host machine** (not inside a container).
+Different datasets update on different schedules. Haresign follows the source
+publication cadence rather than inventing its own dates.
 
----
+| Dataset type | Typical cadence |
+|---|---|
+| Registered patient list size | Monthly |
+| GP appointments | Monthly |
+| Online consultations | Monthly or periodic publication |
+| Cloud telephony | Monthly or periodic publication |
+| NWRS workforce | Monthly or periodic snapshot |
+| GP Patient Survey | Annual |
+| NHS payments | Annual |
+| QOF achievement and prevalence | Annual |
+| GP Contract Services | Periodic publication |
+| PCN DES | Periodic publication |
+| OHID Fingertips | Varies by indicator/profile |
 
-## 1. Online Consultations (OC) Data
+When a source publishes revised data, Haresign may refresh the affected dataset
+and the values shown in tools or returned by the API may change.
 
-### One-liner (export from PC → import to Haresign)
+## Important Interpretation Notes
 
-```bash
-docker exec practiceconnect-prod-web-1 python manage.py export_oc_data_json \
-  | docker exec -i HaresignDotNet python manage.py import_oc_data_json
-```
+### Registered Patient Counts
 
-This streams ~2 million rows directly between containers without writing to disk.
-Expected duration: 5–15 minutes depending on server load.
+Registered patient list size is a raw headcount from the published patient
+registration data. It is not the same as weighted population used for some
+funding calculations.
 
-### Export to file first (then upload via admin UI)
+### Appointment Data
 
-```bash
-# Export from PracticeConnect to a local file
-docker exec practiceconnect-prod-web-1 python manage.py export_oc_data_json \
-  > /tmp/oc_export.ndjson
+Published GP appointment data depends on appointment-book configuration and
+mapping quality. It is useful for benchmarking and trend analysis, but local
+coding and workflow differences can affect comparisons.
 
-# Then upload via admin: /admin/online_consultations/onlineconsultationimportlog/import-tool/
-```
+### Survey Data
 
-### Admin UI
+GP Patient Survey figures are survey estimates. They should be interpreted
+alongside response volumes, confidence intervals, local context, and year-on-year
+methodology changes.
 
-Navigate to **Admin → Online Consultations → Import Tool** (`/admin/online_consultations/onlineconsultationimportlog/import-tool/`).
+### Payment Data
 
-- Shows current row counts, practice count, and latest data month
-- Upload an NDJSON file directly from your browser
-- Options: clear existing data, monthly-only, time-only
+NHS payments data is a published financial dataset. It can support benchmarking,
+but it does not by itself explain contract type, local service arrangements,
+population need, premises arrangements, or one-off payments.
 
-### Management command flags
+### QOF and Contract Data
 
-```
-python manage.py import_oc_data_json [options]
+QOF, GP Contract Services, vaccination, and PCN DES indicators are tied to
+published business rules and reporting periods. Always check the source
+guidance before using outputs for formal submissions or contractual decisions.
 
-  --file PATH      Read from a file instead of stdin
-  --clear          Delete all existing OC data before importing
-  --monthly-only   Only import monthly metrics (skip time-of-day)
-  --time-only      Only import time-of-day metrics (skip monthly)
-```
+## API Availability
 
-### ⚠️ PC export command not in image
+Many cleaned datasets are exposed through the developer API. The live API schema
+is the best source for exact response fields:
 
-The export command `export_oc_data_json` was added to PracticeConnect after its image was built.
-If the PC container is recreated, the command must be copied in again:
+- Swagger UI: `https://haresign.net/api/docs/`
+- ReDoc: `https://haresign.net/api/redoc/`
+- Raw schema: `https://haresign.net/api/schema/`
 
-```bash
-docker cp \
-  /opt/projects/practiceconnect-prod/modules/tools/online_consultations/management/commands/export_oc_data_json.py \
-  practiceconnect-prod-web-1:/app/modules/tools/online_consultations/management/commands/export_oc_data_json.py
-```
+See [Developer API](api.md) for endpoint examples.
 
-Verify it's available:
+## Source Links
 
-```bash
-docker exec practiceconnect-prod-web-1 python manage.py export_oc_data_json --help
-```
-
----
-
-## 2. Prevalence Data
-
-Prevalence data covers QOF register counts (disease prevalence by practice).
-
-### One-liner
-
-```bash
-docker exec practiceconnect-prod-web-1 python manage.py export_prevalence_json \
-  | docker exec -i HaresignDotNet python manage.py import_prevalence_json
-```
-
-### Management command flags
-
-```
-python manage.py import_prevalence_json [options]
-
-  --file PATH   Read from a file instead of stdin
-  --clear       Delete all existing prevalence data before importing
-```
-
----
-
-## 3. PCN / Practice Reference Data
-
-PCN and practice mapping data is imported from NHS Digital / NHSPS CSV files.
-
-```bash
-# Import practice data (ODS)
-docker exec HaresignDotNet python manage.py import_practices --file /path/to/practices.csv
-
-# Import PCN data
-docker exec HaresignDotNet python manage.py import_pcns --file /path/to/pcns.csv
-```
-
-> Check `website/management/commands/` for the exact command names and available flags.
-
----
-
-## 4. Rebuilding After Container Recreation
-
-After rebuilding the Haresign container (e.g. code changes), run migrations and verify:
-
-```bash
-docker compose up -d --build haresign_net
-docker exec HaresignDotNet python manage.py migrate
-docker exec HaresignDotNet python manage.py check
-docker exec HaresignDotNet python manage.py test website --noinput
-```
-
-Data in the PostgreSQL container (`HaresignPostgres`) persists independently and does **not** need to be re-imported after a Haresign rebuild.
-
----
-
-## 5. Verifying Imports
-
-```bash
-# Check row counts
-docker exec HaresignDotNet python manage.py shell -c "
-from online_consultations.models import OnlineConsultationMonthlyMetric, OnlineConsultationTimeMetric
-print('Monthly:', OnlineConsultationMonthlyMetric.objects.count())
-print('Time:', OnlineConsultationTimeMetric.objects.count())
-"
-
-# View recent import logs via admin
-# /admin/online_consultations/onlineconsultationimportlog/
-```
-
-
-On your GDP question
-"Replacing with exact published figures" meant swapping my hand-keyed approximations for the real HMT numbers — which I've now done. I pulled the official March 2026 release ("GDP deflators at market prices, and money GDP"), parsed the spreadsheet, and dropped the real index (2024/25 = 100) into GDP_DEFLATOR_INDEX. The factors now match exactly (e.g. 2020/21 → ×1.1751, i.e. 100 ÷ 85.10).
-
-How to refresh it in future (HMT updates ~quarterly):
-
-Go to the GDP deflators collection on gov.uk and open the newest release.
-Download the .xlsx. In the financial-year table, column B is the year (2024-25), column C is the index (2024-25 = 100).
-Copy the values into GDP_DEFLATOR_INDEX in services.py, converting dashes to slashes (2024-25 → 2024/25). _deflators() auto-picks the latest year as the base, so no other change needed.
-I've saved that procedure to project memory so it's on hand next time.
-
-
-## 6. List Size (Registered Patients) Data
-
-The `list_size` tool uses NHS Digital's monthly **"Patients Registered at a GP
-Practice"** (PDS) publication. Unlike OC/prevalence, this data is **not** exported
-from PracticeConnect — the source files are downloaded manually from NHS Digital
-(digital.nhs.uk is Cloudflare-blocked, so it can't be auto-fetched) and dropped
-into `seeddata/listsize/`.
-
-### Dropping in a month
-
-Create a folder per month under `seeddata/listsize/` (the folder name is free —
-the month is read from each file's `EXTRACT_DATE` column) containing **two** files:
-
-```
-seeddata/listsize/2026-06/
-  gp-reg-pat-prac-quin-age.csv   # REQUIRED — master (all org levels × age × sex)
-  gp-reg-pat-prac-map.csv        # recommended — org names + hierarchy
-```
-
-The other published files (`-all`, `-sing-age-*`) are ignored. `seeddata/listsize/`
-is git-ignored and bind-mounted into both `haresign_net` and `qcluster`.
-
-### Importing
-
-```bash
-docker compose exec haresign_net python manage.py import_list_size          # import new months in the folder
-docker compose exec haresign_net python manage.py import_list_size --force  # re-import months already loaded
-```
-
-Already-loaded months are skipped automatically. Each `quin-age` file is paired
-with the `map` file for the **same month** (by EXTRACT_DATE, not filename), so a
-flat dump of many months into one folder still maps correctly. There is also a
-staff web importer at `/tools/manage/list-size/`.
-
-### Maps, geocoding & the monthly schedule
-
-```bash
-# Boundary GeoJSON for the choropleth maps (ONS Open Geography → uploads/listsize_geo)
-docker compose exec haresign_net python manage.py fetch_boundaries
-
-# Geocode practice postcodes for the "local landscape (within X miles)" panel (postcodes.io)
-docker compose exec haresign_net python manage.py geocode_practices          # --force to re-do
-
-# Register the monthly django-q job that re-runs fetch_boundaries (run once)
-docker compose exec haresign_net python manage.py ensure_listsize_schedules
-```
-
-### One-time setup after a fresh deploy
-
-Data and runtime state aren't in git, so on a new environment run:
-
-```bash
-docker compose exec haresign_net python manage.py migrate
-docker compose exec haresign_net python manage.py import_list_size
-docker compose exec haresign_net python manage.py geocode_practices
-docker compose exec haresign_net python manage.py ensure_listsize_schedules
-docker compose exec haresign_net python manage.py fetch_boundaries
-```
-
-### Verifying
-
-```bash
-docker compose exec haresign_net python manage.py shell -c "
-from modules.data.list_size.models import ListSizeSnapshot, PracticeLocation
-from django.db.models import Count
-print('Org-month rows:', ListSizeSnapshot.objects.count())
-print('Months:', ListSizeSnapshot.objects.values('month').distinct().count())
-print('Geocoded practices:', PracticeLocation.objects.count())
-print(list(ListSizeSnapshot.objects.values('org_type').annotate(n=Count('id'))))
-"
-```
+Source publication pages can move over time, so the live Haresign tools and API
+documentation focus on dataset names and methodology. When using outputs in
+formal papers, board reports, or external submissions, cite the original NHS or
+government publication for the relevant reporting period.
