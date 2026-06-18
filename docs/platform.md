@@ -39,6 +39,35 @@ The API documentation is generated from the live OpenAPI schema:
 - ReDoc: `https://haresign.net/api/redoc/`
 - Raw schema: `https://haresign.net/api/schema/`
 
+## Typical User Journey
+
+1. Start at the tools index.
+2. Choose a tool based on the question you are trying to answer.
+3. Search for a practice, PCN, or geography.
+4. Review headline figures.
+5. Drill into trend, benchmark, or breakdown views.
+6. Check interpretation notes before using a result externally.
+7. Create an account if you want workspaces, saved presets, or repeated use.
+
+## Public And Account Features
+
+Many tools are public. Account features are there to make repeated use easier,
+not to block basic exploration.
+
+| Without an account | With an account |
+|---|---|
+| Browse public tools. | Link practice and PCN workspaces. |
+| Use many calculators and dashboards. | Save common presets. |
+| View public data and methodology. | Switch between linked organisations. |
+| Read API schema and docs. | Manage your uploaded documents. |
+
+## Public Documentation Boundary
+
+These docs explain how to use Haresign and how to understand the public API.
+They do not include internal deployment, hosting, or administrative runbooks.
+Operational details may change without affecting how users interact with the
+platform.
+
 ## Data Principles
 
 Haresign aims to keep the platform:

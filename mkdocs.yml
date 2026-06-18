@@ -11,9 +11,13 @@ theme:
 nav:
   - Home: index.md
   - Platform: platform.md
+  - Getting Started: getting-started.md
+  - Accounts and Workspaces: accounts.md
   - Tools: tools.md
+  - Interpreting Results: interpreting-results.md
   - Data Sources: data-import.md
   - Developer API: api.md
+  - FAQ: faq.md
 
 markdown_extensions:
   - admonition
