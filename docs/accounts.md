@@ -4,6 +4,9 @@ You can use many Haresign tools without an account. Creating an account adds
 features that make repeated use easier, especially if you regularly work with
 the same practice or PCN.
 
+See [Public vs Account Access](public-vs-account.md) if you are deciding
+whether to register before using a tool.
+
 ## What An Account Adds
 
 | Feature | What it helps with |
@@ -130,3 +133,5 @@ information:
 
 - `https://haresign.net/privacy-policy/`
 - `https://haresign.net/cookie-policy/`
+
+For API access, see [Developer API](api.md) and [API Cookbook](api-cookbook.md).

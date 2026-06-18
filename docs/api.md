@@ -3,6 +3,9 @@
 The Haresign developer API exposes read-only NHS reference data and tool-backed
 benchmarking datasets.
 
+For more request patterns and integration examples, see
+[API Cookbook](api-cookbook.md).
+
 ## Interactive Schema
 
 Use the live OpenAPI documentation for the full response schemas:
@@ -113,3 +116,5 @@ curl -H "Authorization: Bearer <api_key>" \
   downloads.
 - The OpenAPI schema is generated from the Django REST Framework serializers and
   view annotations.
+- Store the reporting period returned by the API alongside values in your own
+  system, because different source datasets refresh on different schedules.

@@ -6,6 +6,16 @@ funding, workforce, demand, population, access, quality, and assurance.
 Each tool is designed to answer a practical question, show enough context to
 interpret the result, and make the underlying data easier to reuse.
 
+For detailed guidance on the larger tools, see:
+
+- [Practice Overview](tools/practice-overview.md)
+- [GP Appointments and GPAD](tools/gp-appointments.md)
+- [PCN DES Dashboard](tools/pcn-des.md)
+- [QOF Tools](tools/qof.md)
+- [NHS Payments](tools/nhs-payments.md)
+- [Workforce and ARRS](tools/workforce-arrs.md)
+- [Contract and Assurance Tools](tools/contract-assurance.md)
+
 ## Practice Overview
 
 Use this when you want a single view of a selected practice.

@@ -1,6 +1,6 @@
 site_name: Haresign Docs
 site_description: Public documentation for the Haresign NHS tools platform and developer API.
-site_url: https://haresign-rtd.readthedocs.io/
+site_url: https://haresign.readthedocs.io/en/latest/
 repo_url: https://github.com/milleruk/haresign_rtd
 repo_name: milleruk/haresign_rtd
 
@@ -13,10 +13,22 @@ nav:
   - Platform: platform.md
   - Getting Started: getting-started.md
   - Accounts and Workspaces: accounts.md
+  - Public vs Account Access: public-vs-account.md
   - Tools: tools.md
+  - Tool Guides:
+      - Practice Overview: tools/practice-overview.md
+      - GP Appointments and GPAD: tools/gp-appointments.md
+      - PCN DES Dashboard: tools/pcn-des.md
+      - QOF Tools: tools/qof.md
+      - NHS Payments: tools/nhs-payments.md
+      - Workforce and ARRS: tools/workforce-arrs.md
+      - Contract and Assurance: tools/contract-assurance.md
   - Interpreting Results: interpreting-results.md
+  - Worked Examples: workflows.md
   - Data Sources: data-import.md
   - Developer API: api.md
+  - API Cookbook: api-cookbook.md
+  - Glossary: glossary.md
   - FAQ: faq.md
 
 markdown_extensions:

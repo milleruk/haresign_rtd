@@ -76,6 +76,24 @@ QOF, GP Contract Services, vaccination, and PCN DES indicators are tied to
 published business rules and reporting periods. Always check the source
 guidance before using outputs for formal submissions or contractual decisions.
 
+## Why Figures Can Differ From Local Systems
+
+Haresign generally uses published NHS or government data. A value may differ
+from a local system because:
+
+- the reporting period is different;
+- the source publication has been revised;
+- the local system uses live operational data while the published dataset is a
+  snapshot;
+- coding or mapping rules differ;
+- the organisation has changed PCN, ICB, or contract context;
+- a local report filters records differently;
+- weighted population is being compared with registered list size.
+
+When investigating a difference, check the source name, reporting period,
+organisation code, denominator, and filter choices before assuming either value
+is wrong.
+
 ## API Availability
 
 Many cleaned datasets are exposed through the developer API. The live API schema
