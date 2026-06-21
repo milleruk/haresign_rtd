@@ -73,6 +73,8 @@ Paginated responses follow this shape:
 | `/api/v1/online-consultations/time/` | `date`, `practice`, `pcn`, `supplier` | Online consultation time metrics. Requires `date`, `practice`, or `pcn`. |
 | `/api/v1/list-sizes/` | `month`, `org_type`, `org`, `pcn`, `sub_icb`, `icb`, `region` | Registered patient list size snapshots. Requires at least one listed filter except `org_type`. |
 | `/api/v1/gp-appointments/` | `month`, `practice`, `pcn`, `sub_icb`, `supplier` | GP appointments monthly metrics. Requires one core filter. |
+| `/api/v1/nhs-app/` | `month`, `practice`, `pcn`, `sub_icb` | NHS App usage monthly metrics — logins, unique logins, in-app self-service and active uptake (13+). Requires one core filter. `patients_registered` is the 13+ eligible base, not app sign-ups. |
+| `/api/v1/digital-front-door/` | `practice` or `pcn`, `month` | Composite Digital Front Door score (NHS App + online consultations + online/video appointments) with per-channel national percentiles. Requires `practice` or `pcn`. |
 | `/api/v1/gp-patient-survey/` | `year`, `practice`, `pcn`, `ics`, `region`, `list_band` | GP Patient Survey practice results. Requires one core filter. |
 | `/api/v1/nhs-payments/practices/` | `year`, `practice`, `pcn`, `sub_icb`, `region`, `contract_type` | NHS payments by practice. Requires one core filter. |
 | `/api/v1/nhs-payments/pcns/` | `year`, `pcn`, `icb` | NHS payments by PCN. Requires one listed filter. |

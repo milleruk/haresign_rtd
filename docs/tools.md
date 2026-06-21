@@ -10,6 +10,9 @@ For detailed guidance on the larger tools, see:
 
 - [Practice Overview](tools/practice-overview.md)
 - [GP Appointments and GPAD](tools/gp-appointments.md)
+- [NHS App](tools/nhs-app.md)
+- [Digital Front Door](tools/digital-front-door.md)
+- [GP Patient Survey](tools/gp-patient-survey.md)
 - [PCN DES Dashboard](tools/pcn-des.md)
 - [QOF Tools](tools/qof.md)
 - [NHS Payments](tools/nhs-payments.md)
@@ -50,7 +53,8 @@ What they show:
 - age-band and sex breakdowns;
 - dependency ratio and older-age indicators;
 - trends and growth;
-- national and local landscape views.
+- national and local landscape views;
+- a State of the Nation view with the England-wide picture.
 
 How to use them:
 
@@ -79,7 +83,8 @@ What it shows:
 - national category;
 - booking-to-appointment wait bands;
 - same-day and within-window access indicators;
-- peer and geography comparisons.
+- peer and geography comparisons;
+- a State of the Nation view with the England-wide picture.
 
 How to use it:
 
@@ -130,7 +135,8 @@ What it shows:
 - monthly consultation volumes;
 - clinical, administrative, and unknown/other split;
 - supplier and geography context;
-- time-of-day and weekday patterns where available.
+- time-of-day and weekday patterns where available;
+- a State of the Nation view with the England-wide picture.
 
 How to use it:
 
@@ -144,6 +150,64 @@ Interpretation notes:
 - Supplier configuration and triage workflows can change what is counted.
 - Use with appointments and telephony to understand total demand pressure.
 
+## NHS App Dashboard
+
+Use this to understand NHS App uptake and in-app activity among eligible
+patients.
+
+What it shows:
+
+- registered patients aged 13 and over (the eligible NHS App base);
+- total and unique logins;
+- active uptake, as unique logins against the eligible base;
+- in-app self-service: appointment booking and cancellation, repeat
+  prescriptions, and record views;
+- organ donation registrations and updates;
+- practice, PCN, sub-ICB, ICB, and regional context;
+- a State of the Nation view with England-wide trends and distributions.
+
+How to use it:
+
+1. Select a practice, PCN, or geography.
+2. Review active uptake against the eligible 13+ base.
+3. Compare in-app self-service with online consultations and appointments.
+4. Use trends to track adoption over time.
+
+Interpretation notes:
+
+- "Patients registered" is the eligible 13+ base, not a count of app sign-ups,
+  so the dashboard measures active uptake rather than downloads.
+- Uptake reflects local promotion, demographics, and digital access as well as
+  practice activity.
+
+## Digital Front Door Dashboard
+
+Use this to see how strong a practice or PCN's digital access offer is across
+channels.
+
+What it shows:
+
+- a composite Digital Front Door score (0–100);
+- per-channel contributions from NHS App active uptake, online consultations,
+  and online or video appointments;
+- national percentiles for each scored channel;
+- telephony context where available;
+- insights highlighting the strongest and weakest channels;
+- a State of the Nation view summarising the England-wide picture.
+
+How to use it:
+
+1. Select a practice or PCN.
+2. Review the composite score and per-channel percentiles.
+3. Identify the weakest channel to target improvement.
+4. Re-check after changes to digital access workflows.
+
+Interpretation notes:
+
+- The score is the mean national percentile across the scored channels, so it is
+  relative to other organisations rather than an absolute target.
+- A channel with no data is excluded from the score rather than counted as zero.
+
 ## Cloud Telephony Dashboard
 
 Use this to understand call demand and access through cloud-based telephony.
@@ -156,7 +220,8 @@ What it shows:
 - wait-time distributions;
 - call-duration distributions;
 - time-of-day and weekday patterns;
-- practice, PCN, ICB, and regional context where available.
+- practice, PCN, ICB, and regional context where available;
+- a State of the Nation view with the England-wide picture.
 
 How to use it:
 
@@ -182,7 +247,8 @@ What it shows:
 - appointment wait and choice;
 - consultation quality indicators;
 - continuity and preferred-professional measures;
-- PCN, ICS, England, and list-size peer comparisons.
+- PCN, ICS, England, and list-size peer comparisons;
+- a State of the Nation view with England-wide trends and distributions.
 
 How to use it:
 
@@ -533,7 +599,7 @@ Interpretation notes:
 
 Several datasets behind the tools are available through the developer API,
 including practices, PCNs, population data, QOF, NWRS, online consultations,
-list sizes, GP appointments, GP Patient Survey, NHS payments, cloud telephony,
-PCN DES, and GP Contract data.
+list sizes, GP appointments, NHS App usage, the Digital Front Door score,
+GP Patient Survey, NHS payments, cloud telephony, PCN DES, and GP Contract data.
 
 See [Developer API](api.md) for endpoints and examples.

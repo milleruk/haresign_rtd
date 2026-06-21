@@ -18,6 +18,9 @@ nav:
   - Tool Guides:
       - Practice Overview: tools/practice-overview.md
       - GP Appointments and GPAD: tools/gp-appointments.md
+      - NHS App: tools/nhs-app.md
+      - Digital Front Door: tools/digital-front-door.md
+      - GP Patient Survey: tools/gp-patient-survey.md
       - PCN DES Dashboard: tools/pcn-des.md
       - QOF Tools: tools/qof.md
       - NHS Payments: tools/nhs-payments.md
