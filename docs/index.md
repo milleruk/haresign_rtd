@@ -23,6 +23,8 @@ API for GP practices, PCNs, analysts, and partner systems.
   verification, practice/PCN linking, workspace switching, and saved presets.
 - [Public vs Account Access](public-vs-account.md) explains what can be used
   immediately and what account features add.
+- [AI Connections](ai-connections.md) explains how to connect Claude or ChatGPT
+  to Haresign and ask about practice data in plain English.
 - [Tools](tools.md) summarises the public tools and what each one helps with.
 - [Tool Guides](tools/practice-overview.md) provide more detailed usage notes
   for the main dashboards and calculators.
